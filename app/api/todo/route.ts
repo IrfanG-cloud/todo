@@ -17,9 +17,9 @@ import { sql } from '@vercel/postgres'
    type NewTask = InferModel<typeof tasks, 'insert'>;
 
 export async function GET(){
-    console.log(db);
     const allTasks = await db.select().from(tasks);
     return NextResponse.json(allTasks);
+  
 }
 
 export async function POST(request : NextRequest){
@@ -31,15 +31,15 @@ export async function POST(request : NextRequest){
         createdat: new Date()
       };
 
-    console.log(db);
+
     const insertedUsers = await db.insert(tasks).values(newTask).returning();
 
     return NextResponse.json(insertedUsers);
 }
+
 export async function PUT(request : NextRequest){
     
   const req = await request.json();
-
   if(req.id){
 
     const updateResult = await db.update(tasks)
